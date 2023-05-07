@@ -1,78 +1,65 @@
 #include<iostream>
+#include<array>
 using namespace std;
 
+int n;
 
-int partition(int arr[],int s, int e){
-
-    int pivot = arr[s];
-    int cnt  = 0;
-    for(int i=0;i<=e;i++){
-
-        if(arr[i]< pivot){
-            cnt++;
-        }
-    }
-
-    int pivotposition = s + cnt;
-
-    swap(arr[pivotposition],arr[s]);
-
-    int i = s;
-    int j = e;
-
-    while(i<= pivotposition && j> pivotposition){
-
-        if(arr[i]<= pivot){
-
-            i++;
-        }
-        if(arr[j] > pivot){
-
-            j--;
-        }
-        if(i<= pivotposition && j> pivotposition){
-
-            swap(arr[i++],arr[j--]);
-        }
-    }
-
-    return pivotposition;
+void DispArray(int arr[], int n)              //Function to display array
+{
+  
+    for(int i=0;i<n;i++)
+    cout<<arr[i]<<" ";
 }
 
-void quicksort(int arr[],int s , int e) {
+void QuickSort(int arr[], int l , int h){
+   
+   int down=l+1;
+   int up= h;
+   int pivot = arr[l];
+   int temp;
 
-    if(s>=e){
-        return;
-    }
+   while(down<=up)
+   {
+     while(arr[down]<=pivot && down<=h)
+     down++;
 
-    int p = partition(arr,s,e);
+     while(arr[up]>pivot)
+     up--;
 
-    quicksort(arr,s,p-1);
-    quicksort(arr,p+1,e);
+     if(down<=up)
+     {
+        temp=arr[down];
+        arr[down] = arr[up];
+        arr[up]= temp;
+        up--, down++;
+     }
+
+   }
+   arr[l]=arr[up];
+   arr[up]=pivot;
+   if(up>l+1)
+   QuickSort(arr,l,up-1);
+   if(down<h)
+   QuickSort(arr,down,h);
+
 
 }
 
-int main(){
+int main()
+{
+    //Array input
+    cout<<"input array size"<<endl;;
+    cin>>n;
+    int arr[n];
+    cout<<"Input array elements"<<endl;
+    for(int i=0;i<n;i++)
+    cin>>arr[i];
 
-    int size;
-    cout<<"Enter the size of array:"<<endl;
-    cin>>size;
+  
 
-    int array[size];
+    //Calling the search function
+    QuickSort(arr, 0 ,n-1);
+    cout<<"Sorted array-> ";
+   DispArray(arr,n);
 
-    cout<<"Enter the elements of the array:"<<endl;
-
-    for(int i=0;i<size;i++){
-
-        cin>>array[i];
-    }
-
-    quicksort(array,0,size-1);
-
-     for(int i=0;i<size;i++){
-
-        cout<<array[i]<<" ";
-    }
-
-    return 0;
 }
